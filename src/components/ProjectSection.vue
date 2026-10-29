@@ -1360,6 +1360,7 @@ onBeforeUnmount(() => {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .case-track.is-moving {
@@ -1388,6 +1389,12 @@ onBeforeUnmount(() => {
   .case-card {
     flex-basis: 42vw;
     scroll-snap-align: start;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .case-card:focus-visible,
+  .case-track:focus-visible {
+    outline: none;
   }
 
   .project-grid {
@@ -1431,6 +1438,15 @@ onBeforeUnmount(() => {
     border-radius: 16px;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .dialog-close {
+    top: 0;
+    right: 0;
+  }
+
+  .dialog-category {
+    padding-right: 42px;
   }
 
   .project-visual {
