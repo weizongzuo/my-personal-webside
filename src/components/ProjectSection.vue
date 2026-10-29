@@ -1304,6 +1304,27 @@ onBeforeUnmount(() => {
 @media (max-width: 780px) {
   .case-track {
     gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .case-track.is-moving {
+    overflow-x: auto;
+  }
+
+  .case-track-content {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .case-deck[aria-hidden='true'] {
+    display: none;
+  }
+
+  .case-toolbar {
+    display: none;
   }
 
   .case-deck {
@@ -1313,6 +1334,7 @@ onBeforeUnmount(() => {
 
   .case-card {
     flex-basis: 42vw;
+    scroll-snap-align: start;
   }
 
   .project-grid {
