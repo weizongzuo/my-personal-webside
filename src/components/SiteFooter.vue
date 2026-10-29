@@ -30,19 +30,23 @@ defineProps<{
 }
 
 .site-footer p {
+  grid-column: 1 / -1;
+  grid-row: 1;
   margin: 0;
-  text-align: center;
+  text-align: left;
 }
 
 .footer-quote {
-  max-width: 620px;
-  justify-self: center;
+  width: 100%;
+  max-width: none;
+  justify-self: stretch;
   font-size: 0.76rem;
   line-height: 1.7;
-  text-wrap: pretty;
 }
 
 .footer-brand {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -52,6 +56,8 @@ defineProps<{
 }
 
 .footer-top {
+  grid-column: 3;
+  grid-row: 2;
   justify-self: end;
   text-decoration: none;
 }
@@ -65,17 +71,12 @@ defineProps<{
     grid-template-columns: 1fr 1fr;
   }
 
-  .site-footer p {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    text-align: left;
+  .footer-top {
+    grid-column: 2;
   }
 
   .footer-quote {
-    width: 100%;
-    max-width: none;
     font-size: 0.72rem;
-    text-align: left;
   }
 }
 </style>
