@@ -30,6 +30,41 @@ let reducedMotionQuery: MediaQueryList | null = null
 let technologyResizeObserver: ResizeObserver | null = null
 let resumeTimer = 0
 let dialogCloseTimer = 0
+let pageScrollPosition = 0
+let bodyStyleBeforeDialog: string | null = null
+let isPageScrollLocked = false
+
+function lockPageBehindDialog() {
+  pageScrollPosition = window.scrollY
+  bodyStyleBeforeDialog = document.body.getAttribute('style')
+  isPageScrollLocked = true
+  Object.assign(document.body.style, {
+    position: 'fixed',
+    top: `-${pageScrollPosition}px`,
+    left: '0',
+    right: '0',
+    width: '100%',
+    overflow: 'hidden',
+  })
+}
+
+function unlockPageBehindDialog() {
+  if (!isPageScrollLocked) return
+
+  const documentStyle = document.documentElement.style
+  const previousScrollBehavior = documentStyle.scrollBehavior
+  documentStyle.scrollBehavior = 'auto'
+
+  if (bodyStyleBeforeDialog === null) {
+    document.body.removeAttribute('style')
+  } else {
+    document.body.setAttribute('style', bodyStyleBeforeDialog)
+  }
+  bodyStyleBeforeDialog = null
+  isPageScrollLocked = false
+  window.scrollTo(0, pageScrollPosition)
+  documentStyle.scrollBehavior = previousScrollBehavior
+}
 
 function scheduleAutoplayResume() {
   if (!isAutoplayEnabled.value) return
@@ -89,7 +124,13 @@ function openProject(project: ProjectCase, event: MouseEvent) {
     dialogTrigger = event.currentTarget
   }
   selectedCase.value = project
-  nextTick(() => projectDialog.value?.showModal())
+  nextTick(() => {
+    const dialog = projectDialog.value
+    if (!dialog) return
+
+    dialog.showModal()
+    lockPageBehindDialog()
+  })
 }
 
 function closeProject() {
@@ -117,6 +158,7 @@ function handleDialogClose() {
     window.clearTimeout(dialogCloseTimer)
     dialogCloseTimer = 0
   }
+  unlockPageBehindDialog()
   isDialogClosing.value = false
   selectedCase.value = null
   isFocusWithinSection.value = false
@@ -828,6 +870,17 @@ onBeforeUnmount(() => {
   outline-offset: 3px;
 }
 
+.case-card:focus:not(:focus-visible),
+.case-track:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.case-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
 .project-dialog {
   width: min(720px, calc(100vw - 32px));
   max-width: none;
@@ -1373,9 +1426,11 @@ onBeforeUnmount(() => {
   }
 
   .project-dialog {
-    max-height: 88vh;
+    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px);
     padding: 22px 18px;
     border-radius: 16px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .project-visual {
