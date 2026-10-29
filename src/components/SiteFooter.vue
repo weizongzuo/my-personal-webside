@@ -60,7 +60,7 @@ defineProps<{
   color: var(--accent);
 }
 
-@media (max-width: 560px) {
+@media (max-width: 700px) {
   .site-footer {
     grid-template-columns: 1fr 1fr;
   }
@@ -72,9 +72,10 @@ defineProps<{
   }
 
   .footer-quote {
+    width: 100%;
     max-width: none;
     font-size: 0.72rem;
-    text-wrap: balance;
+    text-align: left;
   }
 }
 </style>
