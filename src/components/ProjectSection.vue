@@ -214,6 +214,8 @@ function moveCarousel(direction: -1 | 1) {
 }
 
 function handleTrackScroll() {
+  if (window.matchMedia('(max-width: 780px)').matches) return
+
   const track = caseTrack.value
   if (!track || !loopDistance || track.scrollLeft === 0) return
 
@@ -949,6 +951,10 @@ onBeforeUnmount(() => {
     color 220ms var(--ease-out);
 }
 
+.dialog-close:focus-visible {
+  outline: none;
+}
+
 .dialog-close svg {
   display: block;
   width: 15px;
@@ -1358,6 +1364,7 @@ onBeforeUnmount(() => {
   .case-track {
     gap: 0;
     overflow-x: auto;
+    overscroll-behavior-x: none;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
@@ -1441,7 +1448,7 @@ onBeforeUnmount(() => {
   }
 
   .dialog-close {
-    top: 0;
+    top: -8px;
     right: 0;
   }
 
