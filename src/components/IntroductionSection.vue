@@ -76,6 +76,23 @@ const snowflakes: Snowflake[] = Array.from({ length: 72 }, (_, id) => {
   min-height: 450px;
   align-items: center;
   padding-block: 64px 86px;
+  --hero-overlay-strong: rgb(7 20 33 / 92%);
+  --hero-overlay-medium: rgb(7 20 33 / 82%);
+  --hero-overlay-soft: rgb(7 20 33 / 58%);
+  --hero-overlay-bottom: rgb(7 20 33 / 20%);
+  --hero-heading: #f3f7fa;
+  --hero-body: #d0dbe4;
+  --hero-role: #51ddbd;
+}
+
+:global(:root[data-theme='light'] .introduction) {
+  --hero-overlay-strong: rgb(218 228 238 / 56%);
+  --hero-overlay-medium: rgb(218 228 238 / 46%);
+  --hero-overlay-soft: rgb(218 228 238 / 36%);
+  --hero-overlay-bottom: rgb(218 228 238 / 14%);
+  --hero-heading: var(--text);
+  --hero-body: var(--muted);
+  --hero-role: var(--accent);
 }
 
 .introduction::before {
@@ -86,10 +103,10 @@ const snowflakes: Snowflake[] = Array.from({ length: 72 }, (_, id) => {
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  background-color: #071421;
+  background-color: var(--page);
   background-image:
-    linear-gradient(90deg, rgb(7 20 33 / 92%) 0%, rgb(7 20 33 / 82%) 38%, rgb(7 20 33 / 58%) 100%),
-    linear-gradient(0deg, rgb(7 20 33 / 20%), transparent 42%),
+    linear-gradient(90deg, var(--hero-overlay-strong) 0%, var(--hero-overlay-medium) 38%, var(--hero-overlay-soft) 100%),
+    linear-gradient(0deg, var(--hero-overlay-bottom), transparent 42%),
     url('/mount-fuji.jpg');
   background-position: center, center, center top;
   background-size: cover;
@@ -135,7 +152,7 @@ const snowflakes: Snowflake[] = Array.from({ length: 72 }, (_, id) => {
 
 .hero-copy {
   min-width: 0;
-  color: #f3f7fa;
+  color: var(--hero-heading);
 }
 
 h1 {
@@ -148,7 +165,7 @@ h1 {
 
 .hero-role {
   margin: 7px 0 0;
-  color: #51ddbd;
+  color: var(--hero-role);
   font-size: clamp(1.05rem, 1.8vw, 1.4rem);
   font-weight: 600;
   line-height: 1.5;
@@ -159,7 +176,7 @@ h1 {
   gap: 3px;
   max-width: 560px;
   margin: 16px 0 0;
-  color: #d0dbe4;
+  color: var(--hero-body);
   font-size: 0.82rem;
   line-height: 1.6;
 }
@@ -169,7 +186,7 @@ h1 {
 }
 
 .education-school {
-  color: #f3f7fa;
+  color: var(--hero-heading);
   font-size: 0.92rem;
   font-weight: 600;
 }
@@ -177,12 +194,12 @@ h1 {
 .hero-summary {
   min-width: 0;
   padding: 0;
-  color: #f3f7fa;
+  color: var(--hero-heading);
 }
 
 .summary-label {
   margin: 0 0 18px;
-  color: #f3f7fa;
+  color: var(--hero-heading);
   font-size: 1.08rem;
   font-weight: 600;
   line-height: 1.5;
@@ -190,7 +207,7 @@ h1 {
 
 .summary-copy {
   margin: 0;
-  color: #d0dbe4;
+  color: var(--hero-body);
   font-size: 0.82rem;
   line-height: 1.8;
 }
@@ -207,8 +224,8 @@ h1 {
 
   .introduction::before {
     background-image:
-      linear-gradient(90deg, rgb(7 20 33 / 88%), rgb(7 20 33 / 74%)),
-      linear-gradient(0deg, rgb(7 20 33 / 32%), transparent 48%),
+      linear-gradient(90deg, var(--hero-overlay-strong), var(--hero-overlay-soft)),
+      linear-gradient(0deg, var(--hero-overlay-bottom), transparent 48%),
       url('/mount-fuji.jpg');
     background-position: center, center, center top;
   }

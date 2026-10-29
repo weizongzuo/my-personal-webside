@@ -137,19 +137,19 @@ function moveCarousel(direction: -1 | 1) {
     : 0
   const step = firstCard.offsetWidth + gap
   const animation = content.getAnimations()[0]
-  if (animation) {
-    const cycleDuration = marqueeDuration.value * 1000
+  const animationDuration = animation?.effect?.getComputedTiming().duration
+  if (animation && typeof animationDuration === 'number' && animationDuration > 0) {
     const currentTime = typeof animation.currentTime === 'number' ? animation.currentTime : 0
     const stepDuration = step / AUTOPLAY_SPEED * 1000
     const nextTime = currentTime + direction * stepDuration
-    animation.currentTime = ((nextTime % cycleDuration) + cycleDuration) % cycleDuration
+    animation.currentTime = ((nextTime % animationDuration) + animationDuration) % animationDuration
     scheduleAutoplayResume()
     return
   }
 
   let currentLeft = track.scrollLeft
-  if (loopDistance && currentLeft >= loopDistance) {
-    currentLeft -= loopDistance
+  if (loopDistance && (currentLeft < 0 || currentLeft >= loopDistance)) {
+    currentLeft = ((currentLeft % loopDistance) + loopDistance) % loopDistance
     track.scrollLeft = currentLeft
   }
   let nextLeft = currentLeft + direction * step
@@ -173,11 +173,21 @@ function moveCarousel(direction: -1 | 1) {
 
 function handleTrackScroll() {
   const track = caseTrack.value
-  if (!track || !loopDistance) return
+  if (!track || !loopDistance || track.scrollLeft === 0) return
 
-  if (track.scrollLeft >= loopDistance) {
-    track.scrollLeft -= loopDistance
+  const offset = track.scrollLeft
+  const animation = caseTrackContent.value?.getAnimations()[0]
+  const animationDuration = animation?.effect?.getComputedTiming().duration
+
+  if (animation && typeof animationDuration === 'number' && animationDuration > 0) {
+    const currentTime = typeof animation.currentTime === 'number' ? animation.currentTime : 0
+    const nextTime = currentTime + offset / AUTOPLAY_SPEED * 1000
+    animation.currentTime = ((nextTime % animationDuration) + animationDuration) % animationDuration
+    track.scrollLeft = 0
+    return
   }
+
+  track.scrollLeft = ((offset % loopDistance) + loopDistance) % loopDistance
 }
 
 function updateCarouselAfterResize() {
