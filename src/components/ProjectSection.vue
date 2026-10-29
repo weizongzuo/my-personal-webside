@@ -9,6 +9,7 @@ const props = defineProps<{
 type ProjectCase = NonNullable<PortfolioCopy['projectCases']>[number]
 
 const AUTOPLAY_SPEED = 38
+const MOBILE_AUTOPLAY_INTERVAL = 3000
 const AUTOPLAY_RESUME_DELAY = 1000
 const DIALOG_CLOSE_DURATION = 480
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
@@ -32,6 +33,7 @@ let mobileCarouselQuery: MediaQueryList | null = null
 let technologyResizeObserver: ResizeObserver | null = null
 let resumeTimer = 0
 let dialogCloseTimer = 0
+let mobileAutoplayTimer = 0
 
 function scheduleAutoplayResume() {
   if (!isAutoplayEnabled.value) return
@@ -46,18 +48,11 @@ function scheduleAutoplayResume() {
 }
 
 function handleMotionPreferenceChange(event: MediaQueryListEvent) {
-  isAutoplayEnabled.value = !event.matches && !isMobileCarousel.value
+  isAutoplayEnabled.value = !event.matches
 }
 
 function handleCarouselModeChange(event: MediaQueryListEvent) {
   isMobileCarousel.value = event.matches
-  isAutoplayEnabled.value = !event.matches && !reducedMotionQuery?.matches
-
-  if (event.matches) {
-    if (resumeTimer) window.clearTimeout(resumeTimer)
-    resumeTimer = 0
-    isInteractionPaused.value = false
-  }
 }
 
 function handleFocusIn(event: FocusEvent) {
@@ -148,19 +143,37 @@ function moveCarousel(direction: -1 | 1) {
   const gap = firstCard.parentElement
     ? Number.parseFloat(getComputedStyle(firstCard.parentElement).columnGap) || 0
     : 0
+  const step = firstCard.offsetWidth + gap
   const animation = isMobileCarousel.value ? undefined : content.getAnimations()[0]
   if (animation) {
     const cycleDuration = marqueeDuration.value * 1000
     const currentTime = typeof animation.currentTime === 'number' ? animation.currentTime : 0
-    const stepDuration = (firstCard.offsetWidth + gap) / AUTOPLAY_SPEED * 1000
+    const stepDuration = step / AUTOPLAY_SPEED * 1000
     const nextTime = currentTime + direction * stepDuration
     animation.currentTime = ((nextTime % cycleDuration) + cycleDuration) % cycleDuration
     scheduleAutoplayResume()
     return
   }
 
+  let currentLeft = track.scrollLeft
+  if (loopDistance && currentLeft >= loopDistance) {
+    currentLeft -= loopDistance
+    track.scrollLeft = currentLeft
+  }
+  let nextLeft = currentLeft + direction * step
+
+  if (loopDistance && nextLeft >= loopDistance) {
+    currentLeft += loopDistance
+    track.scrollLeft = currentLeft
+    nextLeft -= loopDistance
+  } else if (loopDistance && nextLeft < 0) {
+    currentLeft += loopDistance
+    track.scrollLeft = currentLeft
+    nextLeft += loopDistance
+  }
+
   track.scrollBy({
-    left: direction * (firstCard.offsetWidth + gap),
+    left: nextLeft - track.scrollLeft,
     behavior: window.matchMedia(REDUCED_MOTION_QUERY).matches ? 'instant' : 'smooth',
   })
   scheduleAutoplayResume()
@@ -172,8 +185,6 @@ function handleTrackScroll() {
 
   if (track.scrollLeft >= loopDistance) {
     track.scrollLeft -= loopDistance
-  } else if (track.scrollLeft < 0) {
-    track.scrollLeft += loopDistance
   }
 }
 
@@ -265,9 +276,20 @@ onMounted(() => {
   reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY)
   mobileCarouselQuery = window.matchMedia('(max-width: 780px)')
   isMobileCarousel.value = mobileCarouselQuery.matches
-  isAutoplayEnabled.value = !reducedMotionQuery.matches && !isMobileCarousel.value
+  isAutoplayEnabled.value = !reducedMotionQuery.matches
   reducedMotionQuery.addEventListener('change', handleMotionPreferenceChange)
   mobileCarouselQuery.addEventListener('change', handleCarouselModeChange)
+  mobileAutoplayTimer = window.setInterval(() => {
+    if (
+      isMobileCarousel.value
+      && isAutoplayEnabled.value
+      && !isInteractionPaused.value
+      && !isFocusWithinSection.value
+      && !selectedCase.value
+    ) {
+      moveCarousel(1)
+    }
+  }, MOBILE_AUTOPLAY_INTERVAL)
   window.addEventListener('resize', updateCarouselAfterResize)
   technologyResizeObserver = new ResizeObserver(updateTechnologyVisibility)
   updateCarouselAfterResize()
@@ -276,6 +298,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (resumeTimer) window.clearTimeout(resumeTimer)
   if (dialogCloseTimer) window.clearTimeout(dialogCloseTimer)
+  if (mobileAutoplayTimer) window.clearInterval(mobileAutoplayTimer)
   reducedMotionQuery?.removeEventListener('change', handleMotionPreferenceChange)
   mobileCarouselQuery?.removeEventListener('change', handleCarouselModeChange)
   window.removeEventListener('resize', updateCarouselAfterResize)
@@ -304,7 +327,6 @@ onBeforeUnmount(() => {
           <button
             type="button"
             class="carousel-button autoplay-button"
-            :class="{ 'is-mobile-hidden': isMobileCarousel }"
             :aria-label="isAutoplayEnabled ? copy.projectPauseAutoplayLabel : copy.projectResumeAutoplayLabel"
             :aria-pressed="isAutoplayEnabled"
             @click="toggleAutoplay"
@@ -335,6 +357,8 @@ onBeforeUnmount(() => {
         :aria-label="copy.projectsTitle"
         tabindex="0"
         @scroll="handleTrackScroll"
+        @pointerdown="scheduleAutoplayResume"
+        @wheel="scheduleAutoplayResume"
       >
         <div
           ref="caseTrackContent"
@@ -1305,10 +1329,6 @@ onBeforeUnmount(() => {
     animation: none;
     transform: none;
     will-change: auto;
-  }
-
-  .autoplay-button.is-mobile-hidden {
-    display: none;
   }
 
   .case-deck {
