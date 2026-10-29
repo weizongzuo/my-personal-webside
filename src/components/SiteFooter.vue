@@ -74,6 +74,7 @@ defineProps<{
   .footer-quote {
     max-width: none;
     font-size: 0.72rem;
+    text-wrap: balance;
   }
 }
 </style>
