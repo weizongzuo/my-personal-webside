@@ -65,8 +65,10 @@ function selectLocale(locale: Locale) {
 }
 
 .language-option.is-selected {
-  background: var(--surface-raised);
-  color: var(--text);
+  border: 1px solid #B4C2CF;
+  background: #B4C2CF;
+  color: #080f17;
+  font-weight: 700;
 }
 
 @media (max-width: 560px) {
