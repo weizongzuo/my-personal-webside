@@ -49,6 +49,7 @@
 
 html {
   min-width: 320px;
+  overflow-x: clip;
   scroll-behavior: smooth;
   scroll-padding-top: 8rem;
 }

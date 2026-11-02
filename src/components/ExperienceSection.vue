@@ -239,6 +239,10 @@ function openProject(event: MouseEvent, projectTitle: string) {
 }
 
 @media (max-width: 800px) {
+  .experience-project-tooltip {
+    display: none;
+  }
+
   .experience-row {
     grid-template-columns: 104px 20px minmax(0, 1fr);
     gap: 8px;
