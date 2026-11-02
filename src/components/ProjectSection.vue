@@ -114,15 +114,13 @@ function toggleAutoplay() {
   isAutoplayEnabled.value = !isAutoplayEnabled.value
 }
 
-function openProject(project: ProjectCase, event: MouseEvent) {
+function presentProject(project: ProjectCase, trigger: HTMLElement | null) {
   if (dialogCloseTimer) {
     window.clearTimeout(dialogCloseTimer)
     dialogCloseTimer = 0
   }
   isDialogClosing.value = false
-  if (event.currentTarget instanceof HTMLElement) {
-    dialogTrigger = event.currentTarget
-  }
+  dialogTrigger = trigger
   selectedCase.value = project
   nextTick(() => {
     const dialog = projectDialog.value
@@ -131,6 +129,20 @@ function openProject(project: ProjectCase, event: MouseEvent) {
     dialog.showModal()
     lockPageBehindDialog()
   })
+}
+
+function openProject(project: ProjectCase, event: MouseEvent) {
+  presentProject(
+    project,
+    event.currentTarget instanceof HTMLElement ? event.currentTarget : null,
+  )
+}
+
+function openProjectByTitle(title: string, trigger: HTMLElement) {
+  const project = props.copy.projectCases?.find((projectCase) => projectCase.title === title)
+  if (!project) return
+
+  presentProject(project, trigger)
 }
 
 function closeProject() {
@@ -334,6 +346,8 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateCarouselAfterResize)
   technologyResizeObserver?.disconnect()
 })
+
+defineExpose({ openProjectByTitle })
 </script>
 
 <template>

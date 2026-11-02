@@ -6,7 +6,17 @@ const props = defineProps<{
   copy: PortfolioCopy
 }>()
 
+const emit = defineEmits<{
+  openProject: [projectTitle: string, trigger: HTMLElement]
+}>()
+
 const experiences = computed(() => [...props.copy.workHistory].reverse())
+
+function openProject(event: MouseEvent, projectTitle: string) {
+  if (event.currentTarget instanceof HTMLElement) {
+    emit('openProject', projectTitle, event.currentTarget)
+  }
+}
 </script>
 
 <template>
@@ -19,7 +29,11 @@ const experiences = computed(() => [...props.copy.workHistory].reverse())
     </div>
 
     <ol class="experience-list">
-      <li v-for="experience in experiences" :key="experience.company" class="experience-row">
+      <li
+        v-for="(experience, experienceIndex) in experiences"
+        :key="experience.company"
+        class="experience-row"
+      >
         <time class="experience-period">{{ experience.period }}</time>
         <span class="timeline-node" aria-hidden="true"></span>
         <div class="experience-company">
@@ -29,7 +43,34 @@ const experiences = computed(() => [...props.copy.workHistory].reverse())
         <div class="experience-projects">
           <span class="field-label">{{ copy.experienceProjectsLabel }}</span>
           <ul>
-            <li v-for="project in experience.projects" :key="project">{{ project }}</li>
+            <li
+              v-for="(project, projectIndex) in experience.projects"
+              :key="project"
+              class="experience-project-item"
+            >
+              <button
+                v-if="copy.experienceProjectDetails[project]"
+                type="button"
+                class="experience-project-link"
+                :aria-label="`${project}: ${copy.experienceProjectDetailsTooltip}`"
+                :aria-describedby="`experience-project-tooltip-${experienceIndex}-${projectIndex}`"
+                @click="openProject($event, copy.experienceProjectDetails[project])"
+              >
+                {{ project }}
+              </button>
+              <span v-else class="experience-project-static">{{ project }}</span>
+              <span
+                :id="`experience-project-tooltip-${experienceIndex}-${projectIndex}`"
+                class="experience-project-tooltip"
+                role="tooltip"
+              >
+                {{
+                  copy.experienceProjectDetails[project]
+                    ? copy.experienceProjectDetailsTooltip
+                    : copy.experienceProjectNoDetailsTooltip
+                }}
+              </span>
+            </li>
           </ul>
         </div>
       </li>
@@ -120,6 +161,69 @@ const experiences = computed(() => [...props.copy.workHistory].reverse())
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.experience-project-item {
+  position: relative;
+}
+
+.experience-project-link,
+.experience-project-static {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+}
+
+.experience-project-link {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.experience-project-link:hover,
+.experience-project-link:focus-visible {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.experience-project-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.experience-project-tooltip {
+  position: absolute;
+  z-index: 4;
+  bottom: calc(100% + 7px);
+  left: 0;
+  width: max-content;
+  max-width: min(240px, calc(100vw - 48px));
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: 0.62rem;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(3px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+  visibility: hidden;
+}
+
+.experience-project-item:hover .experience-project-tooltip,
+.experience-project-item:focus-within .experience-project-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
 }
 
 .experience-projects li {

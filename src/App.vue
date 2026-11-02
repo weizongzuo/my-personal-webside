@@ -25,6 +25,7 @@ const savedTheme = localStorage.getItem(preferenceKeys.theme)
 const savedLocale = localStorage.getItem(preferenceKeys.locale)
 const theme = ref<Theme>(savedTheme === 'light' ? 'light' : 'dark')
 const locale = ref<Locale>(isLocale(savedLocale) ? savedLocale : 'ja')
+const projectSection = ref<InstanceType<typeof ProjectSection> | null>(null)
 const currentDate = ref(new Date())
 const copy = computed(() => messages[locale.value])
 const experienceDuration = computed(() =>
@@ -36,6 +37,10 @@ const experienceDuration = computed(() =>
     locale.value,
   ),
 )
+
+function openExperienceProject(title: string, trigger: HTMLElement) {
+  projectSection.value?.openProjectByTitle(title, trigger)
+}
 
 let experienceRefreshTimer: number | undefined
 
@@ -90,8 +95,8 @@ watch(
     <main id="main">
       <IntroductionSection :copy="copy" :experience-duration="experienceDuration" />
       <ExpertiseSection :copy="copy" />
-      <ExperienceSection :copy="copy" />
-      <ProjectSection :copy="copy" />
+      <ExperienceSection :copy="copy" @open-project="openExperienceProject" />
+      <ProjectSection ref="projectSection" :copy="copy" />
       <ContactSection :copy="copy" />
     </main>
 

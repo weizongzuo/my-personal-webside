@@ -28,6 +28,9 @@ export interface PortfolioCopy {
   experienceTitle: string
   experienceRangeLabel: string
   experienceProjectsLabel: string
+  experienceProjectDetailsTooltip: string
+  experienceProjectNoDetailsTooltip: string
+  experienceProjectDetails: Record<string, string>
   workHistory: Array<{
     company: string
     period: string
@@ -129,6 +132,20 @@ export const messages: Record<Locale, PortfolioCopy> = {
     experienceTitle: '職務経歴',
     experienceRangeLabel: 'CAREER',
     experienceProjectsLabel: '主な担当',
+    experienceProjectDetailsTooltip: 'クリックして詳細を見る',
+    experienceProjectNoDetailsTooltip: '関連するプロジェクト詳細はありません',
+    experienceProjectDetails: {
+      商業販売プラットフォーム: '商業販売プラットフォーム（モバイル版）',
+      パートナーワークベンチ: 'パートナーワークベンチ',
+      意向書: '意向書',
+      ビッグデータ診断システム: 'ビッグデータ診断システム',
+      車載メンテナンス端末: '車載メンテナンス端末',
+      '5Gクラウド信号運用・保守診断システム': '5Gクラウド信号運用・保守診断システム',
+      福州地下鉄スマート運用保守統合プラットフォーム: '福州地下鉄スマート運用保守統合プラットフォーム',
+      大金所: '大金所（松果財富）',
+      雪松大学: '雪松大学',
+      資産管理システム: '資産管理システム',
+    },
     workHistory: [
       {
         company: '科之鋭人材コンサルティング有限公司（ファーウェイOD）',
@@ -377,6 +394,20 @@ export const messages: Record<Locale, PortfolioCopy> = {
     experienceTitle: 'Experience',
     experienceRangeLabel: 'CAREER',
     experienceProjectsLabel: 'Key projects',
+    experienceProjectDetailsTooltip: 'Click to view details',
+    experienceProjectNoDetailsTooltip: 'No linked project details',
+    experienceProjectDetails: {
+      'Commercial Sales Platform': 'Commercial Sales Platform (Mobile)',
+      'Partner Workbench': 'Partner Workbench',
+      'Intent Orders': 'Intent Order',
+      'Big Data Diagnosis System': 'Big Data Diagnostic System',
+      'Onboard Maintenance Terminal': 'Onboard Maintenance Terminal',
+      '5G Cloud Signal Operations and Maintenance Diagnosis System': '5G Cloud Signal Operations and Maintenance Diagnosis System',
+      'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform': 'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform',
+      Dajinsuo: 'Dajinsuo (Songguo Wealth)',
+      'Cedar University': 'Xuesong University',
+      'Asset Management System': 'Asset Management System',
+    },
     workHistory: [
       {
         company: 'Kezhirui Talent Consulting Co., Ltd. (Huawei OD)',
@@ -625,6 +656,20 @@ export const messages: Record<Locale, PortfolioCopy> = {
     experienceTitle: '工作经历',
     experienceRangeLabel: '职业经历',
     experienceProjectsLabel: '主要项目',
+    experienceProjectDetailsTooltip: '点击查看详情',
+    experienceProjectNoDetailsTooltip: '无关联项目详情',
+    experienceProjectDetails: {
+      商业销售平台: '商业销售平台（移动端）',
+      伙伴工作台: '伙伴工作台',
+      意向单: '意向单',
+      大数据诊断系统: '大数据诊断系统',
+      车载检修终端: '车载检修终端',
+      '5G云信号运维诊断系统': '5G云信号运维诊断系统',
+      福州地铁智能运维综合平台: '福州地铁智能运维综合平台',
+      大金所: '大金所（松果财富）',
+      雪松大学: '雪松大学',
+      资产管理系统: '资产管理系统',
+    },
     workHistory: [
       {
         company: '科之锐有限公司（华为 OD）',
