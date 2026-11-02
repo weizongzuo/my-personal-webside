@@ -91,7 +91,7 @@ const snowflakes: Snowflake[] = Array.from({ length: 72 }, (_, id) => {
   --hero-overlay-soft: rgb(218 228 238 / 36%);
   --hero-overlay-bottom: rgb(218 228 238 / 14%);
   --hero-heading: var(--text);
-  --hero-body: var(--muted);
+  --hero-body: #263440;
   --hero-role: var(--accent);
 }
 
