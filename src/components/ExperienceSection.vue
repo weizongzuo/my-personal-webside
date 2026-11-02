@@ -34,7 +34,10 @@ function openProject(event: MouseEvent, projectTitle: string) {
         :key="experience.company"
         class="experience-row"
       >
-        <time class="experience-period">{{ experience.period }}</time>
+        <time
+          class="experience-period"
+          x-apple-data-detectors="false"
+        >{{ experience.period }}</time>
         <span class="timeline-node" aria-hidden="true"></span>
         <div class="experience-company">
           <h3>{{ experience.company }}</h3>
@@ -112,6 +115,8 @@ function openProject(event: MouseEvent, projectTitle: string) {
   font-size: 0.7rem;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   white-space: nowrap;
 }
 
