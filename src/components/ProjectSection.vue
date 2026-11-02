@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import type { CSSProperties } from 'vue'
 import type { PortfolioCopy } from '../i18n'
 
 const props = defineProps<{
@@ -7,6 +8,24 @@ const props = defineProps<{
 }>()
 
 type ProjectCase = NonNullable<PortfolioCopy['projectCases']>[number]
+type RainDropStyle = CSSProperties & {
+  '--rain-left': string
+  '--rain-height': string
+  '--rain-duration': string
+  '--rain-delay': string
+  '--rain-opacity': string
+}
+
+const rainDrops: RainDropStyle[] = Array.from({ length: 18 }, (_, index) => {
+  const duration = 1.1 + ((index * 7) % 9) / 10
+  return {
+    '--rain-left': `${(index * 47 + 13) % 100}%`,
+    '--rain-height': `${12 + ((index * 11) % 12)}px`,
+    '--rain-duration': `${duration}s`,
+    '--rain-delay': `${-((index * 13) % 20) / 10}s`,
+    '--rain-opacity': `${0.2 + ((index * 3) % 4) / 100}`,
+  }
+})
 
 const AUTOPLAY_SPEED = 38
 const AUTOPLAY_RESUME_DELAY = 1000
@@ -22,12 +41,10 @@ const isAutoplayEnabled = ref(false)
 const isInteractionPaused = ref(false)
 const isFocusWithinSection = ref(false)
 const marqueeDuration = ref(1)
-const technologyVisibleCounts = ref<number[]>([])
 let loopDistance = 0
 let dialogTrigger: HTMLElement | null = null
 let ignoreDialogTriggerFocus = false
 let reducedMotionQuery: MediaQueryList | null = null
-let technologyResizeObserver: ResizeObserver | null = null
 let resumeTimer = 0
 let dialogCloseTimer = 0
 let pageScrollPosition = 0
@@ -252,74 +269,6 @@ function updateCarouselAfterResize() {
   const cloneDeck = track?.querySelector<HTMLElement>('.case-deck[aria-hidden="true"]')
   loopDistance = firstDeck && cloneDeck ? firstDeck.getBoundingClientRect().width : 0
   marqueeDuration.value = loopDistance ? loopDistance / AUTOPLAY_SPEED : 1
-  technologyResizeObserver?.disconnect()
-  track?.querySelectorAll('.case-technologies').forEach((list) => {
-    technologyResizeObserver?.observe(list)
-  })
-  updateTechnologyVisibility()
-}
-
-function updateTechnologyVisibility() {
-  const lists = caseTrack.value?.querySelectorAll<HTMLElement>('.case-technologies')
-  if (!lists?.length) return
-
-  const visibleCounts: number[] = []
-
-  lists.forEach((list) => {
-    const projectIndex = Number(list.dataset.projectIndex)
-    const measure = list.nextElementSibling
-    if (!Number.isInteger(projectIndex) || !(measure instanceof HTMLElement)) return
-
-    const technologyWidths = Array.from(
-      measure.querySelectorAll<HTMLElement>('.case-technology-chip'),
-      (chip) => chip.getBoundingClientRect().width,
-    )
-    const overflowIndicator = measure.querySelector<HTMLElement>('.case-more')
-    if (!technologyWidths.length || !overflowIndicator) return
-
-    const listStyle = getComputedStyle(list)
-    const availableWidth = list.clientWidth
-      - (Number.parseFloat(listStyle.paddingLeft) || 0)
-      - (Number.parseFloat(listStyle.paddingRight) || 0)
-    const gap = Number.parseFloat(listStyle.columnGap) || 0
-    const maxRows = 1
-    let visibleCount = technologyWidths.length
-
-    const fitsInAvailableRows = (count: number) => {
-      const remainingCount = technologyWidths.length - count
-      overflowIndicator.textContent = `+${remainingCount}`
-      const widths = technologyWidths.slice(0, count)
-      if (remainingCount > 0) widths.push(overflowIndicator.getBoundingClientRect().width)
-
-      let row = 1
-      let rowWidth = 0
-      for (const width of widths) {
-        const nextWidth = rowWidth ? rowWidth + gap + width : width
-        if (nextWidth > availableWidth) {
-          row += 1
-          rowWidth = width
-          if (row > maxRows || width > availableWidth) return false
-        } else {
-          rowWidth = nextWidth
-        }
-      }
-
-      return true
-    }
-
-    while (visibleCount > 1 && !fitsInAvailableRows(visibleCount)) {
-      visibleCount -= 1
-    }
-
-    visibleCounts[projectIndex] = Math.min(
-      visibleCounts[projectIndex] ?? visibleCount,
-      visibleCount,
-    )
-  })
-
-  const unchanged = visibleCounts.length === technologyVisibleCounts.value.length
-    && visibleCounts.every((count, index) => count === technologyVisibleCounts.value[index])
-  if (!unchanged) technologyVisibleCounts.value = visibleCounts
 }
 
 watch(
@@ -335,7 +284,6 @@ onMounted(() => {
   isAutoplayEnabled.value = !reducedMotionQuery.matches
   reducedMotionQuery.addEventListener('change', handleMotionPreferenceChange)
   window.addEventListener('resize', updateCarouselAfterResize)
-  technologyResizeObserver = new ResizeObserver(updateTechnologyVisibility)
   updateCarouselAfterResize()
 })
 
@@ -344,7 +292,6 @@ onBeforeUnmount(() => {
   if (dialogCloseTimer) window.clearTimeout(dialogCloseTimer)
   reducedMotionQuery?.removeEventListener('change', handleMotionPreferenceChange)
   window.removeEventListener('resize', updateCarouselAfterResize)
-  technologyResizeObserver?.disconnect()
 })
 
 defineExpose({ openProjectByTitle })
@@ -424,55 +371,18 @@ defineExpose({ openProjectByTitle })
               :aria-label="`${copy.projectDetailsLabel}：${project.title}`"
               @click="openProject(project, $event)"
             >
+              <span class="case-rain" aria-hidden="true">
+                <span
+                  v-for="(drop, dropIndex) in rainDrops"
+                  :key="dropIndex"
+                  class="case-rain-drop"
+                  :style="drop"
+                />
+              </span>
               <span class="case-index">{{ String(index + 1).padStart(2, '0') }}</span>
               <span class="case-category">{{ project.category }}</span>
               <span class="case-title">{{ project.title }}</span>
               <span class="case-description">{{ project.description }}</span>
-              <span v-if="project.challenges[0]" class="case-summary">
-                <span class="case-summary-label">{{ copy.projectChallengesLabel }}</span>
-                <span class="case-summary-text">{{ project.challenges[0] }}</span>
-              </span>
-              <span v-if="project.responsibilities[0]" class="case-summary">
-                <span class="case-summary-label">{{ copy.projectResponsibilitiesLabel }}</span>
-                <span class="case-summary-text">{{ project.responsibilities[0] }}</span>
-              </span>
-              <span v-if="project.results[0]" class="case-summary case-summary-result">
-                <span class="case-summary-label">{{ copy.projectResultsLabel }}</span>
-                <span class="case-summary-text">{{ project.results[0] }}</span>
-              </span>
-              <span
-                class="case-technologies"
-                :data-project-index="index"
-                :aria-label="copy.projectTechnologiesLabel"
-              >
-                <span
-                  v-for="technology in project.technologies.slice(
-                    0,
-                    technologyVisibleCounts[index] ?? Math.min(4, project.technologies.length),
-                  )"
-                  :key="technology"
-                  class="case-technology-chip"
-                >
-                  {{ technology }}
-                </span>
-                <span
-                  v-if="project.technologies.length > (technologyVisibleCounts[index] ?? Math.min(4, project.technologies.length))"
-                  class="case-more"
-                >
-                  +{{
-                    project.technologies.length
-                    - (technologyVisibleCounts[index] ?? Math.min(4, project.technologies.length))
-                  }}
-                </span>
-              </span>
-              <span class="case-technologies-measure" aria-hidden="true">
-                <span
-                  v-for="technology in project.technologies"
-                  :key="technology"
-                  class="case-technology-chip"
-                >{{ technology }}</span>
-                <span class="case-more">+0</span>
-              </span>
               <span class="case-open" aria-hidden="true">↗</span>
             </button>
           </div>
@@ -692,7 +602,7 @@ defineExpose({ openProjectByTitle })
   display: flex;
   min-width: 0;
   flex: 0 0 clamp(230px, 22vw, 280px);
-  min-height: 320px;
+  min-height: 240px;
   height: auto;
   flex-direction: column;
   align-items: flex-start;
@@ -749,13 +659,45 @@ defineExpose({ openProjectByTitle })
 }
 
 .case-index {
+  position: relative;
+  z-index: 1;
   color: var(--accent);
   font-family: var(--mono);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
 
+.case-rain {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  container-type: size;
+  pointer-events: none;
+}
+
+.case-rain-drop {
+  position: absolute;
+  left: var(--rain-left);
+  width: 1px;
+  height: var(--rain-height);
+  transform: translate3d(-8px, -20cqh, 0);
+  background: linear-gradient(180deg, transparent, rgb(145 218 255 / 90%));
+  opacity: var(--rain-opacity);
+  animation: case-rainfall var(--rain-duration) linear var(--rain-delay) infinite;
+  will-change: transform;
+}
+
+@keyframes case-rainfall {
+  to {
+    transform: translate3d(8px, 120cqh, 0);
+  }
+}
+
 .case-category {
+  position: relative;
+  z-index: 1;
   margin-top: 21px;
   color: var(--muted);
   font-size: 0.68rem;
@@ -763,6 +705,8 @@ defineExpose({ openProjectByTitle })
 }
 
 .case-title {
+  position: relative;
+  z-index: 1;
   display: -webkit-box;
   overflow: hidden;
   margin-top: 6px;
@@ -774,74 +718,14 @@ defineExpose({ openProjectByTitle })
 }
 
 .case-description {
-  display: -webkit-box;
-  overflow: hidden;
+  position: relative;
+  z-index: 1;
   margin-top: 9px;
   color: var(--muted);
   font-size: 0.75rem;
   line-height: 1.7;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 
-.case-summary {
-  display: grid;
-  gap: 4px;
-  width: 100%;
-  margin-top: 12px;
-}
-
-.case-summary-label {
-  color: var(--accent);
-  font-size: 0.59rem;
-  font-weight: 650;
-  letter-spacing: 0.04em;
-}
-
-.case-summary-text {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 0.68rem;
-  line-height: 1.55;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.case-summary-result .case-summary-text {
-  color: var(--text);
-}
-
-.case-technologies {
-  position: relative;
-  display: flex;
-  min-width: 0;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 5px;
-  margin-top: auto;
-  padding-top: 14px;
-}
-
-.case-technologies-measure {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  width: max-content;
-  flex-wrap: nowrap;
-  gap: 5px;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.case-technology-chip {
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-
-.case-technologies span,
-.case-technologies-measure span,
 .dialog-tech-list li {
   padding: 4px 7px;
   border: 1px solid color-mix(in srgb, var(--line) 86%, transparent);
@@ -852,13 +736,9 @@ defineExpose({ openProjectByTitle })
   line-height: 1.35;
 }
 
-.case-technologies .case-more,
-.case-technologies-measure .case-more {
-  color: var(--accent);
-}
-
 .case-open {
   position: absolute;
+  z-index: 1;
   right: 18px;
   top: 18px;
   display: grid;
@@ -1449,7 +1329,7 @@ defineExpose({ openProjectByTitle })
 
   .case-card {
     flex-basis: min(320px, calc(100vw - 64px));
-    min-height: 300px;
+    min-height: 240px;
     padding: 19px 17px 17px;
   }
 
@@ -1478,6 +1358,7 @@ defineExpose({ openProjectByTitle })
 @media (prefers-reduced-motion: reduce) {
   .project-card,
   .case-card,
+  .case-rain-drop,
   .case-card::before,
   .carousel-button,
   .dialog-close {
@@ -1486,6 +1367,10 @@ defineExpose({ openProjectByTitle })
 
   .case-track {
     scroll-behavior: auto;
+  }
+
+  .case-rain-drop {
+    animation: none;
   }
 
   .project-dialog[open],
