@@ -1418,6 +1418,16 @@ defineExpose({ openProjectByTitle })
     padding-right: 42px;
   }
 
+  .dialog-employment {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .dialog-period {
+    flex: none;
+  }
+
   .project-visual {
     min-height: 150px;
   }
