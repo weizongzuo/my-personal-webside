@@ -426,6 +426,14 @@ defineExpose({ openProjectByTitle })
               </svg>
             </button>
           </div>
+          <div v-if="getProjectEmployment(selectedCase.title)" class="dialog-employment">
+            <span class="dialog-company">
+              {{ getProjectEmployment(selectedCase.title)?.company }}
+            </span>
+            <span class="dialog-period">
+              {{ getProjectEmployment(selectedCase.title)?.period }}
+            </span>
+          </div>
           <h3 id="project-dialog-title">{{ selectedCase.title }}</h3>
           <p class="dialog-description">{{ selectedCase.description }}</p>
 
@@ -866,6 +874,29 @@ defineExpose({ openProjectByTitle })
   letter-spacing: 0.03em;
 }
 
+.dialog-employment {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.dialog-company {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dialog-period {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
 .dialog-close {
   position: absolute;
   top: -18px;
@@ -901,7 +932,7 @@ defineExpose({ openProjectByTitle })
 }
 
 .project-dialog h3 {
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   font-size: clamp(1.35rem, 3vw, 1.8rem);
   font-weight: 650;
   letter-spacing: -0.025em;
