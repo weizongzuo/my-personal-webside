@@ -393,7 +393,12 @@ defineExpose({ openProjectByTitle })
               </span>
               <span class="case-category">{{ project.category }}</span>
               <span class="case-title">{{ project.title }}</span>
-              <span v-if="getProjectEmployment(project.title)" class="case-period">
+              <span
+                v-if="getProjectEmployment(project.title)"
+                class="case-period"
+                x-apple-data-detectors="false"
+                @click.stop
+              >
                 {{ getProjectEmployment(project.title)?.period }}
               </span>
               <span class="case-description">{{ project.description }}</span>
@@ -430,7 +435,7 @@ defineExpose({ openProjectByTitle })
             <span class="dialog-company">
               {{ getProjectEmployment(selectedCase.title)?.company }}
             </span>
-            <span class="dialog-period">
+            <span class="dialog-period" x-apple-data-detectors="false">
               {{ getProjectEmployment(selectedCase.title)?.period }}
             </span>
           </div>
@@ -760,6 +765,7 @@ defineExpose({ openProjectByTitle })
   font-family: var(--mono);
   font-size: 0.68rem;
   line-height: 1.4;
+  pointer-events: auto;
 }
 
 .case-description {

@@ -50,7 +50,9 @@ const snowflakes: Snowflake[] = Array.from({ length: 72 }, (_, id) => {
         <p class="hero-role">{{ copy.heroTitleSecond }}</p>
         <div class="hero-education">
           <p class="education-school">{{ copy.heroEducationSchool }}</p>
-          <p class="education-period">{{ copy.heroEducationPeriod }}</p>
+          <p class="education-period" x-apple-data-detectors="false">
+            {{ copy.heroEducationPeriod }}
+          </p>
           <p>{{ copy.heroEducationDegree }}</p>
         </div>
       </div>

@@ -69,10 +69,15 @@ a {
     'Yu Gothic', Meiryo, sans-serif;
 }
 
-a[x-apple-data-detectors] {
+a[x-apple-data-detectors],
+a[x-apple-data-detectors-type],
+a[href^='x-apple-data-detectors:'] {
   color: inherit !important;
   cursor: default !important;
   pointer-events: none !important;
+  border: 0 !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
   text-decoration: none !important;
 }
 
