@@ -400,12 +400,12 @@ export const messages: Record<Locale, PortfolioCopy> = {
       'Commercial Sales Platform': 'Commercial Sales Platform (Mobile)',
       'Partner Workbench': 'Partner Workbench',
       'Intent Orders': 'Intent Order',
-      'Big Data Diagnosis System': 'Big Data Diagnostic System',
+      'Big Data Diagnostic System': 'Big Data Diagnostic System',
       'Onboard Maintenance Terminal': 'Onboard Maintenance Terminal',
       '5G Cloud Signal Operations and Maintenance Diagnosis System': '5G Cloud Signal Operations and Maintenance Diagnosis System',
       'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform': 'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform',
       Dajinsuo: 'Dajinsuo (Songguo Wealth)',
-      'Cedar University': 'Xuesong University',
+      'Cedar University': 'Cedar University',
       'Asset Management System': 'Asset Management System',
     },
     workHistory: [
@@ -420,7 +420,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
         period: '2021.01–2022.11',
         summary: 'Led frontend development for railway technology systems.',
         projects: [
-          'Big Data Diagnosis System',
+          'Big Data Diagnostic System',
           'Onboard Maintenance Terminal',
           '5G Cloud Signal Operations and Maintenance Diagnosis System',
           'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform',
@@ -428,7 +428,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
         ],
       },
       {
-        company: 'Guangdong Guangdong-Hong Kong-Macau Greater Bay Area Hard Technology Innovation Research Institute',
+        company: 'Guangdong-Hong Kong-Macau Greater Bay Area Hard Technology Innovation Research Institute',
         period: '2020.11–2021.01',
         summary: 'Led frontend development for the following systems.',
         projects: ['Satellite Measurement and Operation Control System', 'Centralized Operation Management Platform'],
@@ -505,7 +505,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
         title: 'Railway IoT systems',
         description: 'Frontend development for railway diagnostics, maintenance, and operations monitoring.',
         role: 'Led frontend development across multiple systems.',
-        names: ['Big Data Diagnosis System', 'Onboard Maintenance Terminal', '5G Cloud Signal Operations and Maintenance Diagnosis System', 'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform', 'Real-time Monitoring System'],
+        names: ['Big Data Diagnostic System', 'Onboard Maintenance Terminal', '5G Cloud Signal Operations and Maintenance Diagnosis System', 'Fuzhou Metro Intelligent Operations and Maintenance Integrated Platform', 'Real-time Monitoring System'],
       },
       {
         category: 'ORDER / OPERATIONS',
@@ -598,7 +598,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
       },
       {
         category: 'EMPLOYEE SERVICES / H5 AND ADMIN',
-        title: 'Xuesong University',
+        title: 'Cedar University',
         description: 'A system for Xuesong employees to book, register for, search, and manage activities and training. It includes an H5 application embedded in Xuesong Connect and an operations administration system.',
         technologies: ['Vue 2', 'Vuex', 'Vue Router', 'Axios', 'Webpack', 'Element', 'Git', 'Mint UI'],
         challenges: ['The system needed to support both an in-app H5 registration flow and an operations administration system.', 'Mobile viewport adaptation and rapid iteration were key implementation needs.'],
