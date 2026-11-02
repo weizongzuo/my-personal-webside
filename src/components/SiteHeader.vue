@@ -128,7 +128,7 @@ function updateIndicator(shouldAnimate = true) {
 }
 
 function updateActiveSection() {
-  if (scrollSpyLocked) return
+  if (scrollSpyLocked || document.documentElement.classList.contains('is-project-dialog-open')) return
 
   const isAtPageEnd =
     Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 2

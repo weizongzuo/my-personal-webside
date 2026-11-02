@@ -97,6 +97,15 @@ a {
   color: inherit;
 }
 
+@media (max-width: 760px) {
+  html.is-project-dialog-open .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+  }
+}
+
 button {
   color: inherit;
 }

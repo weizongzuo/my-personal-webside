@@ -63,6 +63,7 @@ function lockPageBehindDialog() {
   pageScrollPosition = window.scrollY
   bodyStyleBeforeDialog = document.body.getAttribute('style')
   isPageScrollLocked = true
+  document.documentElement.classList.add('is-project-dialog-open')
   Object.assign(document.body.style, {
     position: 'fixed',
     top: `-${pageScrollPosition}px`,
@@ -88,6 +89,7 @@ function unlockPageBehindDialog() {
   bodyStyleBeforeDialog = null
   isPageScrollLocked = false
   window.scrollTo(0, pageScrollPosition)
+  document.documentElement.classList.remove('is-project-dialog-open')
   documentStyle.scrollBehavior = previousScrollBehavior
 }
 
