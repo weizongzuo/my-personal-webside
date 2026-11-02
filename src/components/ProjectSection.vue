@@ -27,6 +27,14 @@ const rainDrops: RainDropStyle[] = Array.from({ length: 18 }, (_, index) => {
   }
 })
 
+function getProjectEmployment(projectTitle: string) {
+  return props.copy.workHistory.find((experience) =>
+    experience.projects.some(
+      (project) => props.copy.experienceProjectDetails[project] === projectTitle,
+    ),
+  )
+}
+
 const AUTOPLAY_SPEED = 38
 const AUTOPLAY_RESUME_DELAY = 1000
 const DIALOG_CLOSE_DURATION = 480
@@ -380,8 +388,14 @@ defineExpose({ openProjectByTitle })
                 />
               </span>
               <span class="case-index">{{ String(index + 1).padStart(2, '0') }}</span>
+              <span v-if="getProjectEmployment(project.title)" class="case-company">
+                {{ getProjectEmployment(project.title)?.company }}
+              </span>
               <span class="case-category">{{ project.category }}</span>
               <span class="case-title">{{ project.title }}</span>
+              <span v-if="getProjectEmployment(project.title)" class="case-period">
+                {{ getProjectEmployment(project.title)?.period }}
+              </span>
               <span class="case-description">{{ project.description }}</span>
               <span class="case-open" aria-hidden="true">↗</span>
             </button>
@@ -667,6 +681,10 @@ defineExpose({ openProjectByTitle })
   letter-spacing: 0.08em;
 }
 
+.case-company {
+  margin-top: 20px;
+}
+
 .case-rain {
   position: absolute;
   z-index: 0;
@@ -698,10 +716,22 @@ defineExpose({ openProjectByTitle })
 .case-category {
   position: relative;
   z-index: 1;
-  margin-top: 21px;
+  margin-top: 10px;
   color: var(--muted);
   font-size: 0.68rem;
   line-height: 1.4;
+}
+
+.case-company,
+.case-period {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+}
+
+.case-company {
+  font-size: 0.68rem;
+  line-height: 1.45;
 }
 
 .case-title {
@@ -715,6 +745,13 @@ defineExpose({ openProjectByTitle })
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.case-period {
+  margin-top: 5px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.4;
 }
 
 .case-description {
