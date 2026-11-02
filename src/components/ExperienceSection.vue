@@ -107,9 +107,11 @@ function openProject(event: MouseEvent, projectTitle: string) {
 .experience-period {
   padding-top: 2px;
   color: var(--muted);
+  cursor: default;
   font-family: var(--mono);
   font-size: 0.7rem;
   font-variant-numeric: tabular-nums;
+  pointer-events: none;
   white-space: nowrap;
 }
 
