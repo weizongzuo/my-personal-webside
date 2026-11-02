@@ -879,7 +879,7 @@ defineExpose({ openProjectByTitle })
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 15px;
   color: var(--muted);
   font-size: 0.76rem;
   line-height: 1.5;
@@ -1422,6 +1422,7 @@ defineExpose({ openProjectByTitle })
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
+    margin-top: 20px;
   }
 
   .dialog-period {
