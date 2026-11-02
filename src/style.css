@@ -69,6 +69,25 @@ a {
     'Yu Gothic', Meiryo, sans-serif;
 }
 
+a[x-apple-data-detectors] {
+  color: inherit !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  text-decoration: none !important;
+}
+
+time,
+.education-period,
+.case-period,
+.dialog-period {
+  cursor: default;
+  pointer-events: none;
+  text-decoration: none !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 a {
   color: inherit;
 }
