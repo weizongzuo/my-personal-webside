@@ -61,6 +61,13 @@ body {
   transition: background-color 240ms var(--ease-out), color 240ms var(--ease-out);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  html,
+  body {
+    touch-action: manipulation;
+  }
+}
+
 body,
 button,
 a {

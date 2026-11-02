@@ -180,6 +180,7 @@ function openProject(event: MouseEvent, projectTitle: string) {
 
 .experience-project-link {
   cursor: pointer;
+  color: #51ddbd;
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 3px;
@@ -188,7 +189,6 @@ function openProject(event: MouseEvent, projectTitle: string) {
 
 .experience-project-link:hover,
 .experience-project-link:focus-visible {
-  color: var(--accent);
   text-decoration-color: currentColor;
 }
 
@@ -219,11 +219,12 @@ function openProject(event: MouseEvent, projectTitle: string) {
   visibility: hidden;
 }
 
-.experience-project-item:hover .experience-project-tooltip,
-.experience-project-item:focus-within .experience-project-tooltip {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
+@media (hover: hover) and (pointer: fine) {
+  .experience-project-item:hover .experience-project-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
 }
 
 .experience-projects li {
