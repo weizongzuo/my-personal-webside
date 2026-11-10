@@ -35,6 +35,15 @@ function getProjectEmployment(projectTitle: string) {
   )
 }
 
+function getProjectResponsibilitiesAndResults(projectCase: ProjectCase) {
+  return [...new Set([
+    ...projectCase.challenges,
+    ...projectCase.solutions,
+    ...projectCase.responsibilities,
+    ...projectCase.results,
+  ])]
+}
+
 const AUTOPLAY_SPEED = 38
 const AUTOPLAY_RESUME_DELAY = 1000
 const DIALOG_CLOSE_DURATION = 480
@@ -453,35 +462,18 @@ defineExpose({ openProjectByTitle })
             </ul>
           </section>
 
-          <section v-if="selectedCase.challenges.length" class="dialog-section">
-            <h4>{{ copy.projectChallengesLabel }}</h4>
+          <section
+            v-if="getProjectResponsibilitiesAndResults(selectedCase).length"
+            class="dialog-section"
+          >
+            <h4>{{ copy.projectResponsibilitiesResultsLabel }}</h4>
             <ul class="dialog-bullet-list">
-              <li v-for="challenge in selectedCase.challenges" :key="challenge">
-                {{ challenge }}
+              <li
+                v-for="detail in getProjectResponsibilitiesAndResults(selectedCase)"
+                :key="detail"
+              >
+                {{ detail }}
               </li>
-            </ul>
-          </section>
-
-          <section v-if="selectedCase.solutions.length" class="dialog-section">
-            <h4>{{ copy.projectSolutionsLabel }}</h4>
-            <ul class="dialog-bullet-list">
-              <li v-for="solution in selectedCase.solutions" :key="solution">{{ solution }}</li>
-            </ul>
-          </section>
-
-          <section class="dialog-section">
-            <h4>{{ copy.projectResponsibilitiesLabel }}</h4>
-            <ul class="dialog-bullet-list">
-              <li v-for="responsibility in selectedCase.responsibilities" :key="responsibility">
-                {{ responsibility }}
-              </li>
-            </ul>
-          </section>
-
-          <section v-if="selectedCase.results.length" class="dialog-section">
-            <h4>{{ copy.projectResultsLabel }}</h4>
-            <ul class="dialog-bullet-list dialog-results">
-              <li v-for="result in selectedCase.results" :key="result">{{ result }}</li>
             </ul>
           </section>
         </template>
@@ -1007,10 +999,6 @@ defineExpose({ openProjectByTitle })
   border-radius: 50%;
   background: var(--accent);
   content: '';
-}
-
-.dialog-results li {
-  color: var(--text);
 }
 
 @keyframes dialog-enter {
