@@ -251,7 +251,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: '企業向け業務システム',
         title: '商業販売プラットフォーム（モバイル版）',
-        description: '「商業販売プラットフォーム」のモバイル版は、WeLink（紅版）を基盤とした部門内ユーザー向けのワンストップシステムです。案件登録、商談、草案、商務、注文、双函、パートナー開拓、商談支援、ビジネスインサイトを統合した総合的な商業販売管理プラットフォームです。',
+        description: '商業販売プラットフォームのモバイル版は、WeLink（紅版）を基盤に、部門内のメンバー向けに提供されるワンストップの営業支援システムです。案件登録、商談機会、草案、商務、注文、双函、パートナー開拓、ビジネス推進、ビジネスインサイトを一元化した、総合的な営業管理プラットフォームです。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
         challenges: ['モバイル端末上で、案件登録、商談、商務、注文など複数の業務機能を一つの入口に集約する必要がありました。'],
         solutions: ['全体的な技術方針の検討に参加し、フロントエンドの設計と構築を担当しました。', 'ブラウザーキャッシュ、遅延読み込み、非同期読み込みを活用し、リソースの再取得を抑えて初回表示を改善しました。', '業務機能のコンポーネント化・モジュール化とコード構成の整理により、性能と保守性を高めました。'],
@@ -510,7 +510,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: 'BUSINESS SYSTEMS',
         title: 'Commercial Sales Platform (Mobile)',
-        description: 'The mobile version of the Commercial Sales Platform is a one-stop system for internal department users, built on the Red version of WeLink. It integrates reporting, opportunities, drafts, commercial affairs, orders, dual business letters, partner development, business collaboration, and business insights into a comprehensive sales management platform.',
+        description: 'The mobile edition of the Commercial Sales Platform is a one-stop solution for internal teams, built on the Red version of WeLink. It brings together deal registration, sales opportunities, proposals, commercial operations, orders, dual business letters, partner development, business engagement, and market insights in one comprehensive platform for managing commercial sales.',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
         challenges: ['The mobile platform needed to bring multiple commercial sales workflows together in one place.'],
         solutions: ['Participated in the overall technical solution and designed and set up the frontend framework.', 'Used browser caching, lazy loading, and asynchronous loading to reduce repeated resource requests and improve initial page loading.', 'Improved performance and maintainability through business componentization, modularization, and code organization.'],
@@ -769,7 +769,7 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: '企业业务系统',
         title: '商业销售平台（移动端）',
-        description: '商业销售平台移动端是一个基于红版 WeLink、面向部门内部人员的一站式系统，集报备、机会点、草案、商务、订单、双函、拓伙伴、在商言商、商业视界于一体，是综合性的商业销售管理平台。',
+        description: '商业销售平台移动端是一个基于红版 WeLink、面向部门内部人员的一站式系统，集报备、机会点、草案、商务、订单、双函、拓伙伴、在商言商、商业视界于一体的综合性商业销售管理平台。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
         challenges: ['移动端需要在同一入口承载报备、机会点、商务和订单等多个业务模块。'],
         solutions: ['参与整体技术方案设计并搭建前端框架。', '使用浏览器缓存、懒加载和异步加载减少重复资源加载并改善首次加载体验。', '通过业务组件化、模块化和代码组织提升性能与可维护性。'],
