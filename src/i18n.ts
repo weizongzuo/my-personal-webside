@@ -81,7 +81,8 @@ export interface PortfolioCopy {
   projectNextLabel: string
   projectCounterLabel: string
   projectTechnologiesLabel: string
-  projectResponsibilitiesResultsLabel: string
+  projectResponsibilitiesLabel: string
+  projectResultsLabel: string
   contactTitle: string
   contactDescription: string
   contactEmailLabel: string
@@ -223,7 +224,8 @@ export const messages: Record<Locale, PortfolioCopy> = {
     projectNextLabel: '次のプロジェクト',
     projectCounterLabel: 'プロジェクト',
     projectTechnologiesLabel: '使用技術',
-    projectResponsibilitiesResultsLabel: '担当業務と成果',
+    projectResponsibilitiesLabel: '担当業務',
+    projectResultsLabel: '主な成果',
     projects: [
       {
         category: 'BUSINESS SYSTEMS',
@@ -251,22 +253,43 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: '企業向け業務システム',
         title: '商業販売プラットフォーム（モバイル版）',
-        description: '商業販売プラットフォームのモバイル版は、WeLink（紅版）を基盤に、部門内のメンバー向けに提供されるワンストップの営業支援システムです。案件登録、商談機会、草案、商務、注文、双函、パートナー開拓、ビジネス推進、ビジネスインサイトを一元化した、総合的な営業管理プラットフォームです。',
+        description: '部門内の営業担当者向けに、紅版WeLinkを基盤として構築されたワンストップのモバイル営業管理プラットフォームです。WeLink JS-SDKを通じてプラットフォームの各種機能と連携し、営業案件の登録、商談管理、提案書の作成、商務管理、受注管理、契約管理、パートナー開拓など、営業プロセスの幅広い業務を統合。社内担当者に、モバイルでの業務遂行とオフィス業務に共通して利用できる窓口を提供します。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['モバイル端末上で、案件登録、商談、商務、注文など複数の業務機能を一つの入口に集約する必要がありました。'],
-        solutions: ['全体的な技術方針の検討に参加し、フロントエンドの設計と構築を担当しました。', 'ブラウザーキャッシュ、遅延読み込み、非同期読み込みを活用し、リソースの再取得を抑えて初回表示を改善しました。', '業務機能のコンポーネント化・モジュール化とコード構成の整理により、性能と保守性を高めました。'],
-        responsibilities: ['全体的な技術方針の検討に参加し、フロントエンドの詳細設計と構築を担当しました。', 'ブラウザーキャッシュ、遅延読み込み、非同期読み込みを導入し、初回表示の改善に取り組みました。', '業務機能のコンポーネント化・モジュール化とコード構成の整理を行いました。'],
-        results: ['同一リソースの重複読み込みを抑え、初回表示を改善しました。', 'コードの再利用性と保守性を高めました。'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          'プロジェクト全体のフロントエンド技術方針の策定やアーキテクチャ検討に参画し、担当する業務モジュールの詳細設計と開発を担当。',
+          'Vueなどのフロントエンド技術とWeLink JS-SDKを活用し、モバイル向け業務機能と企業向けオフィスプラットフォームの機能を連携。',
+          '各業務モジュールの特性に応じてコンポーネント化・モジュール化を進め、共通業務コンポーネントを抽象化することで、重複開発を抑え、コードの再利用性を向上。',
+          'モバイルページの読み込み性能を改善するため、ブラウザーキャッシュ、遅延読み込み、非同期読み込みなどを用いてリソース読み込みを最適化。',
+          '担当モジュールのコード構成設計、機能開発、保守を行い、業務機能の拡張性と保守性を確保。',
+        ],
+        results: [
+          '担当業務モジュールのフロントエンド設計・開発を完了し、業務機能とWeLinkプラットフォームの機能を連携。',
+          'ブラウザーキャッシュと必要に応じた読み込みの最適化により、重複リクエストを削減し、初回読み込み時のリソース負荷を軽減。モバイルでの利用体験を改善。',
+          '共通コンポーネントの抽象化とモジュール化により重複コードを削減し、モジュールの再利用性を高め、以降の機能追加・保守にかかるコストを低減。',
+        ],
       },
       {
         category: 'パートナープラットフォーム',
         title: 'パートナーワークベンチ',
-        description: 'パートナー向けの業務支援・管理ツールを集約したワンストッププラットフォームです。商談、契約・注文、研修、販売支援、プロジェクト・パートナー管理、分析、製品情報、コミュニティなどを備え、商談・注文・草案などの外部システムとも連携します。',
+        description: '華為のパートナー向けに、業務機会、契約・注文、トレーニング、販売支援、プロジェクト管理、パートナー管理、データ分析、製品・ソリューション検索、パートナーコミュニティなどを集約したワンストップの業務支援・管理プラットフォームです。商談、注文、草案などの外部業務システムとも連携し、システム間のデータ連携と業務プロセスの協調を実現します。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['商談、契約・注文、研修、販売支援、プロジェクト管理、分析など多くの業務モジュールを統合する必要がありました。', '商談・注文・草案の各業務フローを複数の外部システムと連携させる必要がありました。'],
-        solutions: ['複数の業務機能の開発に参加し、外部システムとの連携を調整しました。', 'コンポーネント化・モジュール化とコード構成の整理により、性能と保守性の改善に取り組みました。'],
-        responsibilities: ['複数の業務領域におけるフロントエンド機能を開発しました。', '複数の外部システムと連携し、関連する業務フローの接続を進めました。', '厳しい開発スケジュールの中で目標を達成し、複数回のリリースに対応しました。', 'コンポーネント化・モジュール化により、性能と保守性を改善しました。'],
-        results: ['開発目標を達成し、複数バージョンのリリースを支援しました。', '業務モジュールの再利用性とコードの保守性を高めました。'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          '複数の主要業務モジュールのフロントエンド設計・開発に参画し、機能実装、業務画面のインタラクション、共通コンポーネントの開発を担当。',
+          '多様で複雑な業務シナリオに対応するため、コンポーネント化・モジュール化を推進し、共通業務コンポーネントを抽象化。モジュール間のコード構成と再利用性を改善。',
+          '商談、注文、草案などの外部システムとのフロントエンド連携とAPI結合テストを担当。システム間のデータ連携、APIパラメーターやデータ構造の調整、業務ステータスの処理、エラー通知に対応し、関連する業務フローの連携を推進。',
+          '一部業務モジュールの技術方針に関する検討や開発調整に参画し、実装方針、コード品質、機能リリースを技術面から確認。',
+          '業務要件に応じた継続的な開発において、担当モジュールの新機能開発、既存機能の改善、不具合調査を行い、複数バージョンの継続的なリリースを支援。',
+        ],
+        results: [
+          '複雑な業務モジュールの統合：複数の業務モジュールをフロントエンドで開発・統合し、各業務シナリオの機能間連携とモジュール間の関係を整理。多様な業務を一つのプラットフォームで扱い、継続的に拡張できる基盤を整備。',
+          'システム横断の業務フロー連携：商談、注文、草案などの外部システムとのAPI連携と結合テストを推進。システムごとに異なるデータ構造、APIパラメーター、業務ステータスを調整し、システム間のデータ連携と業務プロセスの接続を実現。',
+          '保守性・拡張性の向上：共通コンポーネントの抽象化、モジュールの責務整理、コード構成の改善により、モジュール間の結合と重複開発を抑制。コードの再利用性とその後の開発効率を向上。',
+          '複数バージョンの開発・リリースを支援：一部モジュールの開発調整と技術レビューを担当し、技術方針の実装、課題の調査、機能リリースを推進。担当モジュールの計画的な継続リリースに貢献。',
+        ],
       },
       {
         category: 'ローコード業務システム',
@@ -482,7 +505,8 @@ export const messages: Record<Locale, PortfolioCopy> = {
     projectNextLabel: 'Next project',
     projectCounterLabel: 'Project',
     projectTechnologiesLabel: 'Technologies',
-    projectResponsibilitiesResultsLabel: 'Project Responsibilities & Results',
+    projectResponsibilitiesLabel: 'Project Responsibilities',
+    projectResultsLabel: 'Project Results',
     projects: [
       {
         category: 'BUSINESS SYSTEMS',
@@ -510,22 +534,43 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: 'BUSINESS SYSTEMS',
         title: 'Commercial Sales Platform (Mobile)',
-        description: 'The mobile edition of the Commercial Sales Platform is a one-stop solution for internal teams, built on the Red version of WeLink. It brings together deal registration, sales opportunities, proposals, commercial operations, orders, dual business letters, partner development, business engagement, and market insights in one comprehensive platform for managing commercial sales.',
+        description: 'A one-stop mobile platform for internal sales teams, built on the Red Edition of WeLink. Integrated with WeLink platform capabilities through the WeLink JS SDK, it brings together key stages of the sales process—including deal registration, opportunity management, proposal drafting, commercial operations, order and contract management, and partner development—in a single entry point for employees to work and manage sales activities on the go.',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['The mobile platform needed to bring multiple commercial sales workflows together in one place.'],
-        solutions: ['Participated in the overall technical solution and designed and set up the frontend framework.', 'Used browser caching, lazy loading, and asynchronous loading to reduce repeated resource requests and improve initial page loading.', 'Improved performance and maintainability through business componentization, modularization, and code organization.'],
-        responsibilities: ['Participated in the overall technical solution design and completed the detailed frontend framework design and setup.', 'Applied browser caching, lazy loading, and asynchronous loading to improve the initial page loading experience.', 'Organized business components and modules to improve performance and maintainability.'],
-        results: ['Reduced repeated loading of the same resources and improved initial page loading speed.', 'Improved code reuse and maintainability.'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          'Contributed to discussions on the overall frontend solution and architecture, and owned detailed design and development for assigned business modules.',
+          'Used Vue and the WeLink JS SDK to integrate mobile business features with capabilities provided by the enterprise collaboration platform.',
+          'Applied component-based and modular design to each business area, extracting shared business components to reduce duplication and improve code reuse.',
+          'Optimized mobile resource loading with browser caching, lazy loading, and asynchronous loading to improve page performance.',
+          'Designed code structures, developed features, and maintained assigned modules to keep them extensible and maintainable.',
+        ],
+        results: [
+          'Designed and developed the assigned business modules, integrating their features with the WeLink platform.',
+          'Reduced duplicate resource requests and the initial page-load burden through browser caching and on-demand loading, improving the mobile experience.',
+          'Reduced duplicated code through reusable shared components and modular design, improving reuse and lowering the cost of future enhancements and maintenance.',
+        ],
       },
       {
         category: 'PARTNER PLATFORM',
         title: 'Partner Workbench',
-        description: 'A one-stop platform that provides partners with business support and management tools. It covers opportunity, contract and order management, training, sales support, project and partner relationship management, analytics, product information, and a partner community, and integrates with external opportunity, order, and draft systems.',
+        description: 'A one-stop business support and management platform for Huawei partners. It brings together business opportunities, contracts and orders, training and enablement, sales and marketing support, project and partner relationship management, analytics, product and solution information, and a partner community. Integrations with external opportunity, order, and draft systems enable cross-system data exchange and coordinated workflows.',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['The platform combines multiple business modules, including opportunities, contracts, orders, training, sales support, project management, and analytics.', 'Opportunity, order, and draft workflows need to coordinate with multiple external systems.'],
-        solutions: ['Contributed to the development of multiple business areas and coordinated integrations with external systems.', 'Used componentization, modularization, and structured code organization to improve performance and maintainability.'],
-        responsibilities: ['Developed frontend features across multiple business areas.', 'Collaborated with multiple external systems to connect related workflows.', 'Delivered development targets under tight timelines and supported multiple release iterations.', 'Improved performance and maintainability through componentization and modularization.'],
-        results: ['Met development targets and supported the release of multiple iterations.', 'Improved business module reuse and code maintainability.'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          'Contributed to frontend design and development across several core business modules, implementing features and user interactions and building shared components.',
+          'Promoted component-based and modular design to address the platform’s breadth of modules and complex workflows. Extracted reusable business components and improved code organization and reuse across modules.',
+          'Owned frontend integrations and API testing with external opportunity, order, and draft systems. Handled cross-system data exchange, API parameter and data-model mapping, business-state handling, and error reporting to connect end-to-end workflows.',
+          'Contributed to technical planning and development coordination for selected modules, reviewing implementation approaches, code quality, and feature delivery.',
+          'Supported ongoing releases by developing features, improving existing functionality, and investigating issues in assigned modules.',
+        ],
+        results: [
+          'Integrated complex business modules: Delivered and integrated multiple frontend modules, clarifying interactions across business scenarios and relationships between modules to support a unified platform that can continue to grow.',
+          'Connected cross-system workflows: Advanced API integration and testing with opportunity, order, and draft systems. Mapped differences in data models, API parameters, and business states to enable reliable data exchange and workflow continuity.',
+          'Improved maintainability and extensibility: Reduced coupling and duplicated development through shared-component design, clearer module responsibilities, and better code organization, increasing reuse and speeding up future iterations.',
+          'Supported delivery across multiple releases: Helped coordinate development and review technical implementation for selected modules, driving issue resolution and feature delivery to keep planned releases on track.',
+        ],
       },
       {
         category: 'LOW-CODE BUSINESS SYSTEM',
@@ -741,7 +786,8 @@ export const messages: Record<Locale, PortfolioCopy> = {
     projectNextLabel: '下一个项目',
     projectCounterLabel: '项目',
     projectTechnologiesLabel: '主要使用技术',
-    projectResponsibilitiesResultsLabel: '项目职责与成果',
+    projectResponsibilitiesLabel: '项目职责',
+    projectResultsLabel: '项目成果',
     projects: [
       {
         category: '企业业务系统',
@@ -769,22 +815,43 @@ export const messages: Record<Locale, PortfolioCopy> = {
       {
         category: '企业业务系统',
         title: '商业销售平台（移动端）',
-        description: '商业销售平台移动端是一个基于红版 WeLink、面向部门内部人员的一站式系统，集报备、机会点、草案、商务、订单、双函、拓伙伴、在商言商、商业视界于一体的综合性商业销售管理平台。',
+        description: '面向部门内部销售人员的一站式移动端商业销售管理平台，基于红版 WeLink 构建，通过 WeLink JS-SDK 集成平台能力，整合案件报备、商机管理、方案草案、商务管理、订单管理、合同管理、合作伙伴拓展等多个业务模块，覆盖销售业务多个环节，为内部人员提供统一的移动办公和业务处理入口。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['移动端需要在同一入口承载报备、机会点、商务和订单等多个业务模块。'],
-        solutions: ['参与整体技术方案设计并搭建前端框架。', '使用浏览器缓存、懒加载和异步加载减少重复资源加载并改善首次加载体验。', '通过业务组件化、模块化和代码组织提升性能与可维护性。'],
-        responsibilities: ['参与项目整体技术方案设计，完成前端框架详细设计与搭建。', '使用浏览器缓存减少相同资源的重复加载，并采用懒加载和异步加载提升页面初次加载速度。', '通过业务组件化、模块化和代码组织，提升项目性能与可维护性。'],
-        results: ['减少重复资源请求，改善页面初次加载体验。', '提升代码复用性与后续维护效率。'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          '参与项目整体前端技术方案设计及技术架构讨论，负责所承担业务模块的前端详细设计与开发。',
+          '基于 Vue 等前端技术及 WeLink JS-SDK，实现移动端业务功能与企业办公平台能力的集成。',
+          '根据业务模块的功能特点，进行组件化和模块化设计，抽象公共业务组件，减少重复开发，提高代码复用性。',
+          '针对移动端页面加载性能，采用浏览器缓存、懒加载、异步加载等技术优化资源加载策略。',
+          '负责所承担模块的代码结构设计、功能开发及后续维护，保障业务功能的可扩展性和可维护性。',
+        ],
+        results: [
+          '完成所负责业务模块的前端设计与开发，实现业务功能与 WeLink 平台能力的集成。',
+          '通过浏览器缓存和按需加载优化，减少重复资源请求，降低页面初次加载时的资源负担，改善移动端访问体验。',
+          '通过公共组件抽象和模块化设计，减少重复代码，提高模块复用性，降低后续功能迭代与维护成本。',
+        ],
       },
       {
         category: '合作伙伴平台',
         title: '伙伴工作台',
-        description: '为合作伙伴提供业务支持与管理工具的一站式平台，涵盖业务机会、合同订单、培训支持、市场销售支持、项目与伙伴关系管理、数据分析、产品方案查询及伙伴社区，并对接机会点、订单、草案等外围系统。',
+        description: '面向华为合作伙伴的一站式业务支持与管理平台，整合业务机会、合同订单、培训赋能、市场销售支持、项目管理、伙伴关系管理、数据分析、产品及解决方案查询、伙伴社区等多个业务模块，为合作伙伴提供统一的业务服务入口。平台与机会点、订单、草案等外围业务系统进行集成，实现跨系统业务数据交互与流程协同。',
         technologies: ['Vue 3', 'Vuex', 'Vue Router', 'Vite', 'Git', 'Vant'],
-        challenges: ['平台覆盖业务机会、合同订单、培训、市场支持、项目管理和数据分析等多个模块。', '机会点、订单和草案等流程需要与多个外围系统协同。'],
-        solutions: ['参与多个业务模块开发并协同对接外围系统，推进业务流程联通。', '在高强度开发周期内持续迭代多个版本，并通过组件化和模块化改善性能与维护效率。'],
-        responsibilities: ['参与多个业务模块的前端开发。', '协同对接多个外围系统，推进业务流程联通。', '在高强度开发周期内持续迭代并推动多个版本上线。', '通过组件化、模块化与代码组织，改善性能和可维护性。'],
-        results: ['按计划完成开发目标，支持多个版本迭代上线。', '提升业务模块复用与代码维护效率。'],
+        challenges: [],
+        solutions: [],
+        responsibilities: [
+          '参与多个核心业务模块的前端设计与开发，负责模块功能实现、业务交互及公共组件开发。',
+          '针对平台业务模块多、业务场景复杂的特点，推进组件化、模块化设计，抽象公共业务组件，优化模块间代码组织与复用方式。',
+          '负责机会点、订单、草案等外围系统的前端对接与接口联调，处理跨系统数据交互、接口参数及数据结构适配、业务状态处理和异常反馈，推动相关业务流程衔接。',
+          '参与部分业务模块的技术方案讨论与开发协调，对模块实现方案、代码质量及功能交付进行技术把关。',
+          '配合业务需求持续迭代，负责所承担模块的新功能开发、现有功能优化及问题排查，支持多个版本持续交付。',
+        ],
+        results: [
+          '复杂业务模块整合：完成多个业务模块的前端开发与集成，梳理不同业务场景下的功能交互及模块间关联关系，支持平台多业务场景的统一承载与持续扩展。',
+          '跨系统业务流程协同：推进机会点、订单、草案等外围系统的接口集成与联调，针对不同系统间的数据结构、接口参数及业务状态差异进行适配处理，解决跨系统数据交互与业务流程衔接问题。',
+          '系统可维护性与扩展性优化：通过公共组件抽象、模块职责划分及代码结构优化，降低模块间耦合与重复开发，提升代码复用性和后续业务迭代效率。',
+          '多版本迭代与交付保障：承担部分模块的开发协调与技术把关，推动技术方案落地、问题排查及功能交付，保障所负责模块按计划完成多个版本迭代上线。',
+        ],
       },
       {
         category: '低代码业务系统',

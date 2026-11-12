@@ -35,12 +35,11 @@ function getProjectEmployment(projectTitle: string) {
   )
 }
 
-function getProjectResponsibilitiesAndResults(projectCase: ProjectCase) {
+function getProjectResponsibilities(projectCase: ProjectCase) {
   return [...new Set([
     ...projectCase.challenges,
     ...projectCase.solutions,
     ...projectCase.responsibilities,
-    ...projectCase.results,
   ])]
 }
 
@@ -463,17 +462,24 @@ defineExpose({ openProjectByTitle })
           </section>
 
           <section
-            v-if="getProjectResponsibilitiesAndResults(selectedCase).length"
+            v-if="getProjectResponsibilities(selectedCase).length"
             class="dialog-section"
           >
-            <h4>{{ copy.projectResponsibilitiesResultsLabel }}</h4>
+            <h4>{{ copy.projectResponsibilitiesLabel }}</h4>
             <ul class="dialog-bullet-list">
               <li
-                v-for="detail in getProjectResponsibilitiesAndResults(selectedCase)"
+                v-for="detail in getProjectResponsibilities(selectedCase)"
                 :key="detail"
               >
                 {{ detail }}
               </li>
+            </ul>
+          </section>
+
+          <section v-if="selectedCase.results.length" class="dialog-section">
+            <h4>{{ copy.projectResultsLabel }}</h4>
+            <ul class="dialog-bullet-list">
+              <li v-for="result in selectedCase.results" :key="result">{{ result }}</li>
             </ul>
           </section>
         </template>
