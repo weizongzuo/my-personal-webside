@@ -1330,8 +1330,13 @@ defineExpose({ openProjectByTitle })
     overflow-x: auto;
     overscroll-behavior-x: none;
     scroll-snap-type: x mandatory;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .case-track::-webkit-scrollbar {
+    display: none;
   }
 
   .case-track.is-moving {
