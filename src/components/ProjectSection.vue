@@ -63,42 +63,43 @@ let ignoreDialogTriggerFocus = false
 let reducedMotionQuery: MediaQueryList | null = null
 let resumeTimer = 0
 let dialogCloseTimer = 0
-let pageScrollPosition = 0
 let bodyStyleBeforeDialog: string | null = null
+let siteShellStyleBeforeDialog: string | null = null
 let isPageScrollLocked = false
 
 function lockPageBehindDialog() {
-  pageScrollPosition = window.scrollY
+  if (isPageScrollLocked) return
+
   bodyStyleBeforeDialog = document.body.getAttribute('style')
+  const siteShell = document.querySelector<HTMLElement>('.site-shell')
+  siteShellStyleBeforeDialog = siteShell?.getAttribute('style') ?? null
   isPageScrollLocked = true
+  const headerHeight = document.querySelector<HTMLElement>('.site-header')?.getBoundingClientRect().height ?? 0
+  projectDialog.value?.style.setProperty('--project-dialog-header-height', `${headerHeight}px`)
+  siteShell?.style.setProperty('--project-dialog-header-height', `${headerHeight}px`)
   document.documentElement.classList.add('is-project-dialog-open')
-  Object.assign(document.body.style, {
-    position: 'fixed',
-    top: `-${pageScrollPosition}px`,
-    left: '0',
-    right: '0',
-    width: '100%',
-    overflow: 'hidden',
-  })
+  document.body.style.overflow = 'hidden'
 }
 
 function unlockPageBehindDialog() {
   if (!isPageScrollLocked) return
 
-  const documentStyle = document.documentElement.style
-  const previousScrollBehavior = documentStyle.scrollBehavior
-  documentStyle.scrollBehavior = 'auto'
-
+  const siteShell = document.querySelector<HTMLElement>('.site-shell')
+  document.documentElement.classList.remove('is-project-dialog-open')
+  if (siteShellStyleBeforeDialog === null) {
+    siteShell?.removeAttribute('style')
+  } else {
+    siteShell?.setAttribute('style', siteShellStyleBeforeDialog)
+  }
   if (bodyStyleBeforeDialog === null) {
     document.body.removeAttribute('style')
   } else {
     document.body.setAttribute('style', bodyStyleBeforeDialog)
   }
   bodyStyleBeforeDialog = null
+  siteShellStyleBeforeDialog = null
   isPageScrollLocked = false
-  window.scrollTo(0, pageScrollPosition)
-  document.documentElement.classList.remove('is-project-dialog-open')
-  documentStyle.scrollBehavior = previousScrollBehavior
+  projectDialog.value?.style.removeProperty('--project-dialog-header-height')
 }
 
 function scheduleAutoplayResume() {
@@ -291,7 +292,16 @@ function updateCarouselAfterResize() {
 
 watch(
   () => props.copy.projectCases,
-  async () => {
+  async (projectCases, previousProjectCases) => {
+    if (selectedCase.value && previousProjectCases) {
+      const selectedIndex = previousProjectCases.findIndex(
+        (project) => project.title === selectedCase.value?.title,
+      )
+      selectedCase.value = selectedIndex >= 0
+        ? projectCases?.[selectedIndex] ?? null
+        : null
+    }
+
     await nextTick()
     updateCarouselAfterResize()
   },
@@ -308,6 +318,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (resumeTimer) window.clearTimeout(resumeTimer)
   if (dialogCloseTimer) window.clearTimeout(dialogCloseTimer)
+  if (projectDialog.value?.open) projectDialog.value.close()
+  unlockPageBehindDialog()
   reducedMotionQuery?.removeEventListener('change', handleMotionPreferenceChange)
   window.removeEventListener('resize', updateCarouselAfterResize)
 })
@@ -832,6 +844,9 @@ defineExpose({ openProjectByTitle })
   width: min(720px, calc(100vw - 32px));
   max-width: none;
   max-height: min(82vh, 820px);
+  inset-block-start: calc(var(--project-dialog-header-height, 0px) + 12px + env(safe-area-inset-top));
+  inset-block-end: calc(12px + env(safe-area-inset-bottom));
+  margin-block: auto;
   overflow: auto;
   padding: clamp(22px, 4vw, 36px);
   border: 1px solid var(--line);
@@ -859,6 +874,7 @@ defineExpose({ openProjectByTitle })
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
   animation: backdrop-enter 620ms ease-out both;
+  clip-path: inset(var(--project-dialog-header-height, 0px) 0 0);
 }
 
 .project-dialog.is-closing::backdrop {
@@ -1409,7 +1425,7 @@ defineExpose({ openProjectByTitle })
   }
 
   .project-dialog {
-    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px);
+    max-height: calc(100dvh - var(--project-dialog-header-height, 0px) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px);
     padding: 22px 18px;
     border-radius: 16px;
     overscroll-behavior: contain;
