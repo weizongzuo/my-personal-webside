@@ -866,11 +866,6 @@ defineExpose({ openProjectByTitle })
   scrollbar-color: var(--line) transparent;
 }
 
-.project-dialog:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 78%, white);
-  outline-offset: 3px;
-}
-
 .project-dialog[open] {
   transform-origin: center;
   backface-visibility: hidden;
@@ -905,7 +900,10 @@ defineExpose({ openProjectByTitle })
 }
 
 .dialog-category {
-  display: block;
+  display: flex;
+  height: 34px;
+  align-items: center;
+  margin-bottom: -17px;
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 600;
@@ -917,7 +915,7 @@ defineExpose({ openProjectByTitle })
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 15px;
+  margin-top: 27px;
   color: var(--muted);
   font-size: 0.76rem;
   line-height: 1.5;
@@ -1458,7 +1456,7 @@ defineExpose({ openProjectByTitle })
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
-    margin-top: 20px;
+    margin-top: 32px;
   }
 
   .dialog-period {
