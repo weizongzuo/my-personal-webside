@@ -162,7 +162,10 @@ function presentProject(project: ProjectCase, trigger: HTMLElement | null) {
     const dialog = projectDialog.value
     if (!dialog) return
 
+    dialog.scrollTop = 0
     dialog.showModal()
+    dialog.focus({ preventScroll: true })
+    dialog.scrollTop = 0
     lockPageBehindDialog()
   })
 }
@@ -206,6 +209,7 @@ function handleDialogClose() {
     window.clearTimeout(dialogCloseTimer)
     dialogCloseTimer = 0
   }
+  if (projectDialog.value) projectDialog.value.scrollTop = 0
   unlockPageBehindDialog()
   isDialogClosing.value = false
   selectedCase.value = null
@@ -440,8 +444,7 @@ defineExpose({ openProjectByTitle })
         @close="handleDialogClose"
       >
         <template v-if="selectedCase">
-          <div class="dialog-topline">
-            <span class="dialog-category">{{ selectedCase.category }}</span>
+          <div class="dialog-close-sticky">
             <button
               type="button"
               class="dialog-close"
@@ -453,6 +456,7 @@ defineExpose({ openProjectByTitle })
               </svg>
             </button>
           </div>
+          <span class="dialog-category">{{ selectedCase.category }}</span>
           <div v-if="getProjectEmployment(selectedCase.title)" class="dialog-employment">
             <span class="dialog-company">
               {{ getProjectEmployment(selectedCase.title)?.company }}
@@ -841,6 +845,8 @@ defineExpose({ openProjectByTitle })
 }
 
 .project-dialog {
+  --dialog-padding: clamp(22px, 4vw, 36px);
+  --dialog-padding-top: var(--dialog-padding);
   width: min(720px, calc(100vw - 32px));
   max-width: none;
   max-height: min(82vh, 820px);
@@ -848,7 +854,7 @@ defineExpose({ openProjectByTitle })
   inset-block-end: calc(12px + env(safe-area-inset-bottom));
   margin-block: auto;
   overflow: auto;
-  padding: clamp(22px, 4vw, 36px);
+  padding: var(--dialog-padding);
   border: 1px solid var(--line);
   border-radius: 20px;
   background:
@@ -881,15 +887,18 @@ defineExpose({ openProjectByTitle })
   animation: backdrop-exit 480ms ease-in both;
 }
 
-.dialog-topline {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.dialog-close-sticky {
+  position: sticky;
+  z-index: 5;
+  top: calc(14px - var(--dialog-padding-top));
+  height: 0;
+  margin-top: calc(14px - var(--dialog-padding-top));
+  margin-bottom: calc(var(--dialog-padding-top) - 14px);
+  pointer-events: none;
 }
 
 .dialog-category {
+  display: block;
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 600;
@@ -921,13 +930,14 @@ defineExpose({ openProjectByTitle })
 
 .dialog-close {
   position: absolute;
-  top: -18px;
-  right: -18px;
+  top: 0;
+  right: calc(14px - var(--dialog-padding));
   display: grid;
   width: 34px;
   height: 34px;
   padding: 0;
   place-items: center;
+  pointer-events: auto;
   transition:
     transform 220ms var(--ease-out),
     border-color 220ms var(--ease-out),
@@ -1425,16 +1435,13 @@ defineExpose({ openProjectByTitle })
   }
 
   .project-dialog {
+    --dialog-padding: 18px;
+    --dialog-padding-top: 22px;
     max-height: calc(100dvh - var(--project-dialog-header-height, 0px) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px);
-    padding: 22px 18px;
+    padding: var(--dialog-padding-top) var(--dialog-padding);
     border-radius: 16px;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .dialog-close {
-    top: -8px;
-    right: 0;
   }
 
   .dialog-category {
