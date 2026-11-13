@@ -862,7 +862,13 @@ defineExpose({ openProjectByTitle })
     var(--surface);
   color: var(--text);
   box-shadow: 0 28px 90px rgb(0 0 0 / 42%);
+  outline: none;
   scrollbar-color: var(--line) transparent;
+}
+
+.project-dialog:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 78%, white);
+  outline-offset: 3px;
 }
 
 .project-dialog[open] {
