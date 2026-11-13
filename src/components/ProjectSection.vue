@@ -868,7 +868,6 @@ defineExpose({ openProjectByTitle })
 
 .project-dialog[open] {
   transform-origin: center;
-  backface-visibility: hidden;
   animation: dialog-enter 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -1045,7 +1044,7 @@ defineExpose({ openProjectByTitle })
   }
 
   to {
-    transform: perspective(1400px) rotateY(0) rotateX(0) rotateZ(0) translateY(0) scale(1);
+    transform: none;
     filter: blur(0);
     opacity: 1;
   }
