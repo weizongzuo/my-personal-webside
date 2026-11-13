@@ -890,10 +890,11 @@ defineExpose({ openProjectByTitle })
 .dialog-close-sticky {
   position: sticky;
   z-index: 5;
-  top: calc(14px - var(--dialog-padding-top));
-  height: 0;
-  margin-top: calc(14px - var(--dialog-padding-top));
-  margin-bottom: calc(var(--dialog-padding-top) - 14px);
+  top: calc(15px - var(--dialog-padding-top));
+  display: flex;
+  height: 34px;
+  justify-content: flex-end;
+  margin: calc(15px - var(--dialog-padding-top)) 0 -34px;
   pointer-events: none;
 }
 
@@ -929,12 +930,11 @@ defineExpose({ openProjectByTitle })
 }
 
 .dialog-close {
-  position: absolute;
-  top: 0;
-  right: calc(14px - var(--dialog-padding));
   display: grid;
   width: 34px;
   height: 34px;
+  flex: 0 0 auto;
+  margin-right: calc(15px - var(--dialog-padding));
   padding: 0;
   place-items: center;
   pointer-events: auto;
